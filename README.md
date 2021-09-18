@@ -34,7 +34,7 @@ Output: -1
 ```
 
 
-### BFS Implementation
+### BFS Implementation 1 : Time Limit Exceeded
 ```java
 class Solution {
     public int numBusesToDestination(int[][] routes, int source, int target) {
@@ -78,3 +78,56 @@ class Solution {
     }
 }
 ```
+
+### BFS Implementation 2 : Optimized
+```java
+class Solution {
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        if(routes == null || routes.length == 0)
+            return 0;
+        
+        Map<Integer,List<Integer>> stopToRouteMap = new HashMap<>();
+        for(int i = 0; i < routes.length; i++) {
+            for(int j = 0; j < routes[i].length; j++) {
+                stopToRouteMap.putIfAbsent(routes[i][j], new ArrayList<Integer>());
+                stopToRouteMap.get(routes[i][j]).add(i);
+            }
+        }
+        
+        int busChange = 0;
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(source);
+        
+        Set<Integer> stopSeen = new HashSet<>();
+        stopSeen.add(source);
+        Set<Integer> routeSeen = new HashSet<>();
+        
+        while(!q.isEmpty()) {
+            int size = q.size();
+            for(int i = 0; i < size; i++) {
+              int stop = q.remove();
+              if(stop == target)
+                  return busChange;
+              List<Integer> busRoutes = stopToRouteMap.get(stop);
+              for(int routeNumber : busRoutes) {
+                  if(!routeSeen.contains(routeNumber)) {
+                      for(int newStop : routes[routeNumber]) {
+                        if(!stopSeen.contains(newStop)) {
+                           q.add(newStop);
+                           stopSeen.add(newStop);
+                        }
+                      }
+                      routeSeen.add(routeNumber);
+                  }
+              }  
+            }
+            busChange++;
+        }
+        return -1;
+    }
+}
+```
+
+
+### References :
+https://www.youtube.com/watch?v=odmGyOJM5EY (Nice Video)
