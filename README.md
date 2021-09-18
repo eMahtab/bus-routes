@@ -25,9 +25,9 @@ Output: -1
 
 **Constraints:**
 
-1 <= routes.length <= 500.
-1 <= routes[i].length <= 105
-All the values of routes[i] are unique.
-sum(routes[i].length) <= 105
-0 <= routes[i][j] < 106
-0 <= source, target < 106
+1. 1 <= routes.length <= 500.
+2. 1 <= routes[i].length <= 105
+3. All the values of routes[i] are unique.
+4. sum(routes[i].length) <= 105
+5. 0 <= routes[i][j] < 106
+6. 0 <= source, target < 106
