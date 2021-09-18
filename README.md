@@ -32,3 +32,49 @@ Output: -1
  0 <= routes[i][j] < 106
  0 <= source, target < 106
 ```
+
+
+### BFS Implementation
+```java
+class Solution {
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        if(routes == null || routes.length == 0)
+            return 0;
+        
+        Map<Integer,List<Integer>> stopToRouteMap = new HashMap<>();
+        for(int i = 0; i < routes.length; i++) {
+            for(int j = 0; j < routes[i].length; j++) {
+                stopToRouteMap.putIfAbsent(routes[i][j], new ArrayList<Integer>());
+                stopToRouteMap.get(routes[i][j]).add(i);
+            }
+        }
+        
+        int busChange = 0;
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(source);
+        
+        Set<Integer> stopSeen = new HashSet<>();
+        stopSeen.add(source);
+        
+        while(!q.isEmpty()) {
+            int size = q.size();
+            for(int i = 0; i < size; i++) {
+              int stop = q.remove();
+              if(stop == target)
+                  return busChange;
+              List<Integer> busRoutes = stopToRouteMap.get(stop);
+              for(int routeNumber : busRoutes) {
+                  for(int newStop : routes[routeNumber]) {
+                      if(!stopSeen.contains(newStop)) {
+                          q.add(newStop);
+                          stopSeen.add(newStop);
+                      }
+                  }
+              }  
+            }
+            busChange++;
+        }
+        return -1;
+    }
+}
+```
